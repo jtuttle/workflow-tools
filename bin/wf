@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "thor"
+
+class WorkflowCli < Thor
+  desc "foo", "Print foo"
+  def foo
+    puts "foo"
+  end
+end
+
+WorkflowCli.start
