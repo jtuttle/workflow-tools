@@ -7,10 +7,14 @@ class GitHelper
     client.user
   end
 
+  def issues
+
+  end
+
   private
 
   def client
     @client ||=
-      Octokit::Client.new(access_token: Config::User.github.access_token)
+      Octokit::Client.new(access_token: Config.user.github.access_token)
   end
 end
