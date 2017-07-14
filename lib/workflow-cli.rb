@@ -14,7 +14,10 @@ class WorkflowCli < Thor
 
   desc "status", "Shows a summary of the issue associated with the current branch."
   def status
-    puts GitHelper.new.user.name
+    git = GitHelper.new
+    
+    puts git.user.name
+    puts Config.project.github.project_name
   end
   
   desc "pull_request", "Creates a pull request without assigning to a reviewer."

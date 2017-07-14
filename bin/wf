@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
+#!/bin/bash
 
-require_relative '../lib/workflow-cli.rb'
-
-WorkflowCli.start
+ruby_version=$(cat $(dirname $0)/../.ruby-version)
+exec rvm $ruby_version@workflow-cli do workflow-cli "$@"
