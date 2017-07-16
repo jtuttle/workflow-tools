@@ -7,8 +7,8 @@ class GitHelper
     client.user
   end
 
-  def issues
-
+  def issues(label = nil)
+    client.issues(Config.project.github.project_name, { labels: label })
   end
 
   private
