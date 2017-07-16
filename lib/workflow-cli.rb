@@ -6,8 +6,21 @@ require_relative 'git_helper'
 require_relative 'config'
 
 class WorkflowCli < Thor
-  desc "start", "Creates a branch and marks a story as in progress."
+  desc "issues", "Get a list of Github issues."
+  method_option :label, for: :issues, type: :string, aliases: "-l", desc: 
+  def issues
+    git = GitHelper.new
+
+    issues = git.issues(options[:label])
+
+    issues.each do |i|
+      labels = i.labels.map { |l| l.name }
+      labels_str = labels.empty? ? '' : " [#{labels.join(', ')}]"
+      puts "##{i.number} - #{i.title}#{labels_str}"
+    end
+  end
   
+  desc "start", "Creates a branch and marks a story as in progress."
   def start
     puts "start"
   end
