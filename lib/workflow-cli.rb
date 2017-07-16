@@ -7,11 +7,11 @@ require_relative 'config'
 
 class WorkflowCli < Thor
   desc "issues", "Get a list of Github issues."
-  method_option :label, for: :issues, type: :string, aliases: "-l", desc: 
+  method_option :labels, for: :issues, type: :array, aliases: "-l", desc: 
   def issues
     git = GitHelper.new
 
-    issues = git.issues(options[:label])
+    issues = git.issues(options[:labels])
 
     issues.each do |i|
       labels = i.labels.map { |l| l.name }
