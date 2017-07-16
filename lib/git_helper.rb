@@ -7,8 +7,9 @@ class GitHelper
     client.user
   end
 
-  def issues(label = nil)
-    client.issues(Config.project.github.project_name, { labels: label })
+  def issues(labels)
+    labels ||= []
+    client.issues(Config.project.github.project_name, { labels: labels.join(',') })
   end
 
   private
