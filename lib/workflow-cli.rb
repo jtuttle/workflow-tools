@@ -49,6 +49,7 @@ class WorkflowCli < Thor
     str << "\nTitle: #{issue.title}"
     str << "\nAssignee: #{issue.assignee.login}"
     # TODO: have a standard set of labels so that we can present a status?
+    # review, approved, etc
     str << "\nLabels: #{issue.labels.map(&:name).join(', ')}"
 
     say(str)
@@ -64,6 +65,18 @@ class WorkflowCli < Thor
   map cr: :code_review
   def code_review
     puts "code review"
+  end
+
+  desc "revise", "Assign back to the person implementing the story."
+  def review
+    # Might need some guesswork here because github doesn't track original assignee explicitly
+    puts "revise"
+  end
+
+  # TODO: This assumes the implementor merges the story, which is not always the case.
+  desc "approve", "Label the issue as approved and assign it back to the implementor."
+  def approve
+    puts "approve"
   end
 
   desc "complete", "Merges pull request, deletes branch, and closes issue."
