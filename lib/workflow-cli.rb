@@ -40,9 +40,18 @@ class WorkflowCli < Thor
   desc "status", "Shows a summary of the issue associated with the current branch."
   def status
     git = GitHelper.new
-    
-    puts git.user.name
-    puts Config.project.github.project_name
+
+    issue_number = /\d+$/.match(git.current_branch)
+    issue = git.get_issue(issue_number)
+
+    str = HighLine.color('Github Issue', :underline)
+    str << "\nNumber: #{issue.number}"
+    str << "\nTitle: #{issue.title}"
+    str << "\nAssignee: #{issue.assignee.login}"
+    # TODO: have a standard set of labels so that we can present a status?
+    str << "\nLabels: #{issue.labels.map(&:name).join(', ')}"
+
+    say(str)
   end
   
   desc "pull_request", "Creates a pull request without assigning to a reviewer."

@@ -7,6 +7,10 @@ class GitHelper
     github.user
   end
 
+  def current_branch
+    git.current_branch
+  end
+
   def get_issue(issue_number)
     github.issue(repo_name, issue_number)
   end
