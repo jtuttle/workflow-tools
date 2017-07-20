@@ -36,10 +36,10 @@ class GitHelper
 
   def initialize_branch(issue)
     branch_name = generate_branch_name(issue)
-    say(@git.branch(branch_name).checkout)
-    say(@git.commit("Issue ##{issue.number} Started.", { allow_empty: true }))
-    say(@git.push(@git.branch_name))
-    say(@git.set_upstream_tracking_reference)
+    say(git.branch(branch_name).checkout)
+    say(git.commit("Issue ##{issue.number} Started.", { allow_empty: true }))
+    say(git.push('origin', branch_name))
+    say(`git branch --set-upstream-to origin/#{branch_name}`)
     branch_name
   end
 
