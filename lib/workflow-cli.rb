@@ -32,7 +32,8 @@ class WorkflowCli < Thor
     branch_name = git.initialize_branch(issue)
 
     git.assign_issue(issue_number, git.user.login)
-    git.label_issue(issue_number, ["in progress"])
+    git.add_labels(issue_number, ["in progress"])
+    git.remove_label(issue_number, "ready")
 
     say("Issue started! You are now working in branch: #{branch_name}")
   end
