@@ -59,13 +59,16 @@ class GitHelper
   end
   
   def assign_issue(issue_number, user_name)
-    github.update_issue(repo_name, issue_number, { assignee: user_name })
+    say(github.update_issue(repo_name, issue_number, { assignee: user_name }))
   end
 
-  def label_issue(issue_number, labels)
+  def add_labels(issue_number, labels)
     github.add_labels_to_an_issue(repo_name, issue_number, labels)
   end
-
+  
+  def remove_label(issue_number, label)
+    github.remove_label(repo_name, issue_number, label)
+  end
 
   private
 
