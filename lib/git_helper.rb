@@ -38,7 +38,7 @@ class GitHelper
     branch_name = generate_branch_name(issue)
     say(git.branch(branch_name).checkout)
     say(git.commit("Issue ##{issue.number} Started.", { allow_empty: true }))
-    say(git.push('origin', branch_name))
+    say(push(branch_name))
     say(`git branch --set-upstream-to origin/#{branch_name}`)
     branch_name
   end
@@ -62,12 +62,65 @@ class GitHelper
     say(github.update_issue(repo_name, issue_number, { assignee: user_name }))
   end
 
-  def add_labels(issue_number, labels)
-    github.add_labels_to_an_issue(repo_name, issue_number, labels)
+  def add_label(issue_number, label)
+    github.add_labels_to_an_issue(repo_name, issue_number, [label])
+    say("Added label '#{label}'")
   end
   
   def remove_label(issue_number, label)
-    github.remove_label(repo_name, issue_number, label)
+    begin
+      github.remove_label(repo_name, issue_number, label)
+      say("Removed label '#{label}'")
+    rescue Octokit::NotFound
+      say("Could not remove label '#{label}'")
+    end
+  end
+
+  def push(branch_name)
+    say(git.push('origin', branch_name))
+  end
+
+
+
+
+  def pull_request(branch_name)
+    pull_request = github.pull_requests(repo_name).select do |pr|
+      pr.head.ref == branch_name
+    end
+
+    pull_request.first
+  end
+
+  def pull_request_number(branch_name)
+    pr = pull_request(branch_name)
+    pr.nil? ? nil : pr.number
+  end
+
+  def pull_request_link(branch_name)
+    pr = pull_request(branch_name)
+    pr.nil? ? nil : pr.html_url
+  end
+
+  def pull_request_issue(branch_name)
+    pr = pull_request(branch_name)
+    get_issue(pr.issue_url.split('/').last)
+  end
+
+  def create_pull_request(branch_name, base, issue) #title, body)
+    return if pull_request_link(branch_name)
+
+    pr = github.create_pull_request_for_issue(repo_name, base, branch_name, issue.number)
+    pr._links.html.href
+  end
+
+  def find_or_create_pull_request(issue, branch_name, parent)
+    pr = pull_request_link(branch_name)
+
+    if pr.nil?
+      pr = create_pull_request(branch_name, parent, issue) #issue.title, issue.html_url)
+    end
+
+    pr
   end
 
   private

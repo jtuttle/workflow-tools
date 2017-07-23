@@ -32,7 +32,7 @@ class WorkflowCli < Thor
     branch_name = git.initialize_branch(issue)
 
     git.assign_issue(issue_number, git.user.login)
-    git.add_labels(issue_number, ["in progress"])
+    git.add_label(issue_number, "in progress")
     git.remove_label(issue_number, "ready")
 
     say("Issue started! You are now working in branch: #{branch_name}")
@@ -64,8 +64,33 @@ class WorkflowCli < Thor
   
   desc "code_review", "Creates a pull request, marks an issue as in review, and assigns it to a reviewer."
   map cr: :code_review
+  option :parent, aliases: "-p", type: :string, default: "master"
+  option :reviewer, aliases: "-r", type: :string
   def code_review
-    puts "code review"
+    git = GitHelper.new
+
+    branch_name = git.current_branch
+    issue_number = /\d+$/.match(branch_name)
+    issue = git.get_issue(issue_number)
+
+    git.push(branch_name)
+    pr_link = git.find_or_create_pull_request(issue, branch_name, options[:parent])
+                
+    # TODO: can't seem to set the reviewer through octokit (doh!) so just set assignee
+    if !options[:reviewer].nil?
+      git.assign_issue(issue_number, options[:reviewer])
+      pr_issue = git.pull_request_issue(branch_name)
+      binding.pry
+      git.assign_issue(pr_issue.number, options[:reviewer])
+    end
+    
+    # TODO: This gets done automatically by Waffle, but we shouldn't assume that
+    # for general use...let's see what happens!
+    git.remove_label(issue_number, "in progress")
+    git.add_label(issue_number, "review")
+    
+    say("Pull request created/updated: #{pr_link}")
+    `open #{pr_link}` if agree("Open in browser?")
   end
 
   desc "revise", "Assign back to the person implementing the story."
