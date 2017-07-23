@@ -1,4 +1,4 @@
 #!/bin/bash
 
 ruby_version=$(cat $(dirname $0)/../.ruby-version)
-exec rvm $ruby_version@workflow-cli do workflow-cli "$@"
+exec rvm $ruby_version@workflow-tools do workflow-tools "$@"
