@@ -8,7 +8,7 @@ require 'pry'
 require_relative 'git_helper'
 require_relative 'config'
 
-class WorkflowCli < Thor
+class WorkflowTools < Thor
   desc "issues", "Get a list of Github issues."
   option :labels, aliases: "-l", type: :array
   option :assignee, aliases: "-a", type: :string
