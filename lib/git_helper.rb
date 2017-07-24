@@ -4,24 +4,9 @@ class GitHelper
     git.current_branch
   end
 
-  def checkout_and_pull(branch_name)
-    begin
-      branch_name ||= 'master'
-      say(git.checkout(branch_name))
-      say(git.pull('origin', branch_name))
-    rescue Git::GitExecuteError
-      raise StandardError, "Unable to checkout and pull branch: \"#{branch_name}\"."
-    end
-  end
 
-  def initialize_branch(issue)
-    branch_name = generate_branch_name(issue)
-    say(git.branch(branch_name).checkout)
-    say(git.commit("Issue ##{issue.number} Started.", { allow_empty: true }))
-    say(push(branch_name))
-    say(`git branch --set-upstream-to origin/#{branch_name}`)
-    branch_name
-  end
+
+
 
   def checkout(branch_name)
     branch = git.branches.to_a.detect { |br| br.name == branch_name }
@@ -57,21 +42,6 @@ class GitHelper
     pull_request.first
   end
 
-  def pull_request_number(branch_name)
-    pr = pull_request(branch_name)
-    pr.nil? ? nil : pr.number
-  end
-
-  def pull_request_link(branch_name)
-    pr = pull_request(branch_name)
-    pr.nil? ? nil : pr.html_url
-  end
-
-  def pull_request_issue(branch_name)
-    pr = pull_request(branch_name)
-    get_issue(pr.issue_url.split('/').last)
-  end
-
   def create_pull_request(branch_name, base, issue) #title, body)
     return if pull_request_link(branch_name)
 
@@ -104,9 +74,5 @@ class GitHelper
     Config.project.github.repo_name
   end
 
-  def generate_branch_name(issue)
-    name = issue.title.downcase.strip.gsub(/[^\w\s]/, '').gsub(/\s+/, '-')
-    cutoff = name.index('-', 75) || 100
-    "#{name.slice(0, cutoff)}--#{issue.number}"
-  end
+
 end

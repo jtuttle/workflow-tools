@@ -8,7 +8,7 @@ module WorkflowTools
       end
       
       def user
-        client.user
+        client.user.login
       end
       
       def issue(issue_number)
@@ -29,18 +29,13 @@ module WorkflowTools
         end
       end
 
-      def common_issue(issue)
-        ::WorkflowTools::Common::Issue.new(
-          issue.html_url,
-          issue.number,
-          issue.title,
-          issue.assignee.login,
-          issue.labels.map { |l| l.name }
-        )
-      end
-
       def assign_issue(issue_number, assignee)
-        say(client.update_issue(repo_name, issue_number, { assignee: assignee }))
+        begin
+          client.update_issue(repo_name, issue_number, { assignee: assignee })
+          say("Assigned issue to #{assignee}.")
+        rescue Octokit::UnprocessableEntity
+          say("Unable to assign issue to #{assignee}.")
+        end
       end
 
       def add_issue_label(issue_number, label)
@@ -48,13 +43,21 @@ module WorkflowTools
         say("Added label '#{label}'")
       end
       
-      def remove_label(issue_number, label)
+      def remove_issue_label(issue_number, label)
         begin
           client.remove_label(repo_name, issue_number, label)
           say("Removed label '#{label}'.")
         rescue Octokit::NotFound
           say("Tried to remove label '#{label}' but it was not found.")
         end
+      end
+
+      def pull_request(branch_name)
+        pull_request = client.pull_requests(repo_name).select do |pr|
+          pr.head.ref == branch_name
+        end
+
+        common_pull_request(pull_request.first)
       end
 
       private
@@ -66,6 +69,24 @@ module WorkflowTools
 
       def repo_name
         Config.project.github.repo_name
+      end
+
+      def common_issue(issue)
+        ::WorkflowTools::Common::Issue.new(
+          issue.html_url,
+          issue.number,
+          issue.title,
+          issue.assignee ? issue.assignee.login : nil,
+          issue.labels.map { |l| l.name }
+        )
+      end
+
+      def common_pull_request(pull_request)
+        ::WorkflowTools::Common::PullRequest.new(
+          pull_request.html_url,
+          pull_request.number,
+          get_issue(pull_request.issue_url.split('/').last)
+        )
       end
     end
   end

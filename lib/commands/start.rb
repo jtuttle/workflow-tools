@@ -1,16 +1,15 @@
 module WorkflowTools
   module Command
     class Start
-      def self.execute(opts, issue_tracking, version_control)
-        git = GitHelper.new
-        issue = git.get_issue(issue_number)
+      def self.execute(issue_number, opts, issue_tracking, version_control)
+        issue = issue_tracking.issue(issue_number)
 
-        git.checkout_and_pull(options[:parent])
-        branch_name = git.initialize_branch(issue)
+        version_control.checkout_and_pull(opts[:parent])
+        branch_name = version_control.initialize_branch(issue)
 
-        git.assign_issue(issue_number, git.user.login)
-        git.add_label(issue_number, "in progress")
-        git.remove_label(issue_number, "ready")
+        issue_tracking.assign_issue(issue.number, issue_tracking.user)
+        issue_tracking.add_issue_label(issue_number, "in progress")
+        issue_tracking.remove_issue_label(issue_number, "ready")
 
         say("Issue started! You are now working in branch: #{branch_name}")        
       end
