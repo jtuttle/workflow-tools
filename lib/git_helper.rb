@@ -1,27 +1,7 @@
 class GitHelper
-  def initialize
-
-  end
-
-  def user
-    github.user
-  end
 
   def current_branch
     git.current_branch
-  end
-
-  def get_issue(issue_number)
-    github.issue(repo_name, issue_number)
-  end
-  
-  def get_issues(labels, assignee = nil)
-    options = {
-      labels: labels.nil? ? [] : labels.join(','),
-      assignee: assignee
-    }
-    
-    github.issues(repo_name, options)
   end
 
   def checkout_and_pull(branch_name)
@@ -58,23 +38,9 @@ class GitHelper
     end
   end
   
-  def assign_issue(issue_number, user_name)
-    say(github.update_issue(repo_name, issue_number, { assignee: user_name }))
-  end
 
-  def add_label(issue_number, label)
-    github.add_labels_to_an_issue(repo_name, issue_number, [label])
-    say("Added label '#{label}'")
-  end
-  
-  def remove_label(issue_number, label)
-    begin
-      github.remove_label(repo_name, issue_number, label)
-      say("Removed label '#{label}'")
-    rescue Octokit::NotFound
-      say("Could not remove label '#{label}'")
-    end
-  end
+
+
 
   def push(branch_name)
     say(git.push('origin', branch_name))

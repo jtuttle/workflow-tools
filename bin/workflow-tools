@@ -2,4 +2,4 @@
 
 require_relative '../lib/workflow-tools.rb'
 
-WorkflowTools.start
+WorkflowTools::WorkflowTools.start
