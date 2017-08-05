@@ -19,19 +19,19 @@ module WorkflowTools
     option :labels, aliases: "-l", type: :array
     option :assignee, aliases: "-a", type: :string
     def issues
-      Command::Issues.execute(options, issue_tracking)
+      Command::Issues.execute(options[:labels], options[:assignee], issue_tracking)
     end
 
     desc "status", "Shows a summary of the issue associated with the specified or current branch."
     option :issue_number, aliases: "-i", type: :numeric
     def status
-      Command::Status.execute(options, version_control, issue_tracking)
+      Command::Status.execute(options[:issue_number], version_control, issue_tracking)
     end
     
     desc "start ISSUE_NUMBER", "Creates a branch and marks an issue as in progress."
     option :parent, aliases: "-p", type: :string
     def start(issue_number)
-      Command::Start.execute(issue_number, options, issue_tracking, version_control)
+      Command::Start.execute(issue_number, options[:parent], issue_tracking, version_control)
     end
     
     desc "pull_request", "Creates a pull request without assigning to a reviewer."
