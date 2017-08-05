@@ -14,6 +14,14 @@ module WorkflowTools
         /\d+$/.match(current_branch)
       end
 
+      def branch_name_for_issue(issue)
+        generate_branch_name(issue)
+      end
+
+      def branch_exists?(branch_name)
+        client.branches.map(&:name).include?(branch_name)
+      end
+      
       def checkout_and_pull(branch_name)
         branch_name ||= MASTER
         
@@ -26,7 +34,7 @@ module WorkflowTools
         end
       end
 
-      def initialize_branch(issue)
+      def initialize_branch_for_issue(issue)
         branch_name = generate_branch_name(issue)
         say(client.branch(branch_name).checkout)
         say(client.commit("Issue ##{issue.number} Started.", { allow_empty: true }))
