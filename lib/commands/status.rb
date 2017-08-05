@@ -1,8 +1,8 @@
 module WorkflowTools
   module Command
     class Status
-      def self.execute(opts, version_control, issue_tracking)
-        issue_number = opts[:issue_number] || version_control.current_issue_number
+      def self.execute(issue_number, version_control, issue_tracking)
+        issue_number = issue_number || version_control.current_issue_number
         issue = issue_tracking.issue(issue_number)
 
         str = HighLine.color("#{issue_tracking.service_name} Issue (#{issue.number})", :underline)
