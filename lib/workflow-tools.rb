@@ -4,6 +4,7 @@ require 'highline/import'
 require 'pry'
 
 require_relative 'common/issue'
+require_relative 'common/labels'
 require_relative 'commands/issues'
 require_relative 'commands/status'
 require_relative 'commands/start'
@@ -63,8 +64,8 @@ module WorkflowTools
       
       # TODO: This gets done automatically by Waffle, but we shouldn't assume that
       # for general use...let's see what happens!
-      git.remove_label(issue_number, "in progress")
-      git.add_label(issue_number, "review")
+      git.remove_label(issue_number, Common::Labels::IN_PROGRESS)
+      git.add_label(issue_number, Common::Labels::REVIEW)
       
       say("Pull request created/updated: #{pr_link}")
       `open #{pr_link}` if agree("Open in browser?")
