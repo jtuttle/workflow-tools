@@ -57,7 +57,28 @@ module WorkflowTools
           pr.head.ref == branch_name
         end
 
+        return nil if pull_request.first.nil?
+
         common_pull_request(pull_request.first)
+      end
+
+      def find_or_create_pull_request(issue, parent_branch_name)
+        pull_request = pull_request(issue.branch_name)
+
+        if !pull_request.nil?
+          say("Found existing pull request: #{pull_request.url}")
+          return pull_request
+        end
+        
+        pull_request = client.create_pull_request(
+          repo_name,
+          parent_branch_name, issue.branch_name,
+          issue.title, "Closes ##{issue.number}"
+        )
+
+        say("Created new pull request: #{pull_request.url}")
+        
+        common_pull_request(pull_request)
       end
 
       private
@@ -85,7 +106,7 @@ module WorkflowTools
         ::WorkflowTools::Common::PullRequest.new(
           pull_request.html_url,
           pull_request.number,
-          get_issue(pull_request.issue_url.split('/').last)
+          pull_request.issue_url.split('/').last
         )
       end
     end

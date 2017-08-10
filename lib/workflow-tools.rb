@@ -3,11 +3,14 @@ require 'hashie'
 require 'highline/import'
 require 'pry'
 
+require_relative 'common/branch'
 require_relative 'common/issue'
 require_relative 'common/labels'
+require_relative 'common/pull_request'
 require_relative 'commands/issues'
 require_relative 'commands/status'
 require_relative 'commands/start'
+require_relative 'commands/code_review'
 require_relative 'issue_tracking/git_hub'
 require_relative 'version_control/git'
 require_relative 'git_helper'
@@ -45,30 +48,7 @@ module WorkflowTools
     option :parent, aliases: "-p", type: :string, default: "master"
     option :reviewer, aliases: "-r", type: :string
     def code_review
-      git = GitHelper.new
-
-      branch_name = git.current_branch
-      issue_number = /\d+$/.match(branch_name)
-      issue = git.get_issue(issue_number)
-
-      git.push(branch_name)
-      pr_link = git.find_or_create_pull_request(issue, branch_name, options[:parent])
-      
-      # TODO: can't seem to set the reviewer through octokit (doh!) so just set assignee
-      if !options[:reviewer].nil?
-        git.assign_issue(issue_number, options[:reviewer])
-        pr_issue = git.pull_request_issue(branch_name)
-        binding.pry
-        git.assign_issue(pr_issue.number, options[:reviewer])
-      end
-      
-      # TODO: This gets done automatically by Waffle, but we shouldn't assume that
-      # for general use...let's see what happens!
-      git.remove_label(issue_number, Common::Labels::IN_PROGRESS)
-      git.add_label(issue_number, Common::Labels::REVIEW)
-      
-      say("Pull request created/updated: #{pr_link}")
-      `open #{pr_link}` if agree("Open in browser?")
+      Command::CodeReview.execute(options[:parent], options[:reviewer], issue_tracking, version_control)
     end
 
     desc "revise", "Assign back to the person implementing the story."
