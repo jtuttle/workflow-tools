@@ -1,5 +1,5 @@
 # workflow-tools
-A CLI for managing story workflow via Github.
+A configurable CLI for managing project workflow.
 
 ## Installation
 
@@ -7,26 +7,28 @@ A CLI for managing story workflow via Github.
 
     ```bash
     git clone git@github.com:jtuttle/workflow-tools.git
+    cd workflow-tools
     ```
 
-2. Install dependencies
-
-Since `workflow-tools` is implemented in Ruby, you will first need to [install RVM](https://rvm.io/rvm/install). Then install Ruby with `rvm install ruby-2.4.1`
-
-3. Obtain Github access token
-
-4. Copy `config/config.yml.sample` to `config/config.yml` and insert your Github Access token:
+1. Install dependencies. Since `workflow-tools` is implemented in Ruby, you will first need to [install RVM](https://rvm.io/rvm/install). Then:
 
     ```bash
-    cd $WORK/workflow-tools/config
-    cp config.yml.sample config.yml
+    rvm install ruby-2.4.1
+    gem install bundler
+    bundle install
     ```
 
-5. Add the `/bin` directory and tab-completion script to your `$PATH`:
+1. Copy `config/config.yml.sample` to `config/config.yml` and insert the credentials for your desired services (see [the wiki](https://github.com/jtuttle/workflow-tools/wiki) for details).
+
+    ```bash
+    cp config/config.yml.sample config/config.yml
+    ```
+
+1. Add the `/bin` directory and tab-completion script to your `$PATH`:
 
     ```bash
     echo "export PATH=\$PATH:<your>/<path>/<to>/workflow-tools/bin" >> ~/.profile
-    echo "source ~/<my>/<path>/<to>/workflow-tools/tabcomplete.sh" >> ~/.profile
+    echo "source ~/<your>/<path>/<to>/workflow-tools/tabcomplete.sh" >> ~/.profile
     ```
 
 ## Project Configuration
