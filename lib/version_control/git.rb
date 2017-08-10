@@ -7,15 +7,7 @@ module WorkflowTools
       MASTER = 'master'
       
       def current_branch
-        client.current_branch
-      end
-
-      def current_issue_number
-        /\d+$/.match(current_branch)
-      end
-
-      def branch_name_for_issue(issue)
-        generate_branch_name(issue)
+        common_branch(client.current_branch)
       end
 
       def branch_exists?(branch_name)
@@ -43,16 +35,20 @@ module WorkflowTools
         branch_name
       end
 
+      def push(branch)
+        client.push(ORIGIN, branch.name)
+      end
+
       private
 
       def client
         @client ||= ::Git.init
       end
 
-      def generate_branch_name(issue)
-        name = issue.title.downcase.strip.gsub(/[^\w\s]/, '').gsub(/\s+/, '-')
-        cutoff = name.index('-', 75) || 100
-        "#{name.slice(0, cutoff)}--#{issue.number}"
+      def common_branch(branch_name)
+        ::WorkflowTools::Common::Branch.new(
+          branch_name
+        )
       end
     end
   end

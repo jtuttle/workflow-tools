@@ -3,7 +3,7 @@ module WorkflowTools
     class Start
       def self.execute(issue_number, parent_branch, issue_tracking, version_control)
         issue = issue_tracking.issue(issue_number)
-        branch_name = version_control.branch_name_for_issue(issue)
+        branch_name = issue.branch_name
         
         if version_control.branch_exists?(branch_name)
           version_control.checkout_and_pull(branch_name)
