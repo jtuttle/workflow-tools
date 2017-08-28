@@ -30,9 +30,15 @@ A configurable CLI for managing project workflow.
     echo "export PATH=\$PATH:<your>/<path>/<to>/workflow-tools/bin" >> ~/.profile
     ```
 
-## Project Configuration
+## Commands
 
-## Sample Workflow
+`wf issues`: list issues
+
+`wf status`: shows the status of the issue for the current branch or given issue number
+
+`wf start [issue_number]`: create a branch, perform an initial commit, and label the issue as "in progress"
+
+`wf code_review`: create a pull request and (optionally) assign the issue to a reviewer
 
 ## Contributing
 
