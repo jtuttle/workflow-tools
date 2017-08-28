@@ -6,14 +6,16 @@ class Config
     def user
       @@user ||= Hashie::Mash.load(File.expand_path("../../config/config.yml", __FILE__))
     end
-      
+
+=begin
     def project
       @@project ||=
         if File.exists?(PROJECT_FILE)
           Hashie::Mash.load(PROJECT_FILE)
         else
           Hashie::Mash.new
-        end    
+        end
     end
+=end
   end
 end
