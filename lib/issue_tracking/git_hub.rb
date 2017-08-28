@@ -89,8 +89,9 @@ module WorkflowTools
       end
 
       def repo_name
-        # TODO: consider using: git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//'
-        Config.project.github.repo_name
+        @repo_name ||=
+          `git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//'`.strip
+        #Config.project.github.repo_name
       end
 
       def common_issue(issue)

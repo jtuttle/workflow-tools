@@ -24,11 +24,10 @@ A configurable CLI for managing project workflow.
     cp config/config.yml.sample config/config.yml
     ```
 
-1. Add the `/bin` directory and tab-completion script to your `$PATH`:
+1. Add the `/bin` directory to your `$PATH`:
 
     ```bash
     echo "export PATH=\$PATH:<your>/<path>/<to>/workflow-tools/bin" >> ~/.profile
-    echo "source ~/<your>/<path>/<to>/workflow-tools/tabcomplete.sh" >> ~/.profile
     ```
 
 ## Project Configuration
