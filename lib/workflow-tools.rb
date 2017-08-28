@@ -7,13 +7,15 @@ require_relative 'common/branch'
 require_relative 'common/issue'
 require_relative 'common/labels'
 require_relative 'common/pull_request'
+
 require_relative 'commands/issues'
-require_relative 'commands/status'
-require_relative 'commands/start'
 require_relative 'commands/code_review'
+require_relative 'commands/complete'
+require_relative 'commands/start'
+require_relative 'commands/status'
+
 require_relative 'issue_tracking/git_hub'
 require_relative 'version_control/git'
-require_relative 'git_helper'
 require_relative 'config'
 
 module WorkflowTools
@@ -65,7 +67,7 @@ module WorkflowTools
 
     desc "complete", "Merges pull request, deletes branch, and closes issue."
     def complete
-      puts "complete"
+      Command::Complete.execute(issue_tracking, version_control)
     end
 
     private
