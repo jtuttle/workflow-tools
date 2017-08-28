@@ -18,7 +18,7 @@ A configurable CLI for managing project workflow.
     bundle install
     ```
 
-1. Copy `config/config.yml.sample` to `config/config.yml` and insert the credentials for your desired services (see [the wiki](https://github.com/jtuttle/workflow-tools/wiki) for details).
+1. Copy `config/config.yml.sample` to `config/config.yml` and insert the credentials for your desired services:
 
     ```bash
     cp config/config.yml.sample config/config.yml
