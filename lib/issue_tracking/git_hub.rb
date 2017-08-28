@@ -89,6 +89,7 @@ module WorkflowTools
       end
 
       def repo_name
+        # TODO: consider using: git remote show origin -n | grep h.URL | sed 's/.*://;s/.git$//'
         Config.project.github.repo_name
       end
 
@@ -106,7 +107,8 @@ module WorkflowTools
         ::WorkflowTools::Common::PullRequest.new(
           pull_request.html_url,
           pull_request.number,
-          pull_request.issue_url.split('/').last
+          pull_request.issue_url.split('/').last,
+          pull_request.mergeable
         )
       end
     end

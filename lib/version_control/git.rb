@@ -5,6 +5,10 @@ module WorkflowTools
     class Git
       ORIGIN = 'origin'
       MASTER = 'master'
+
+      def master_branch
+        common_branch(MASTER)
+      end
       
       def current_branch
         common_branch(client.current_branch)
@@ -15,19 +19,16 @@ module WorkflowTools
       end
       
       def checkout_and_pull(branch_name)
-        branch_name ||= MASTER
-        
         begin
           say(client.checkout(branch_name))
           say(client.pull(ORIGIN, branch_name))
         rescue ::Git::GitExecuteError => e
-          binding.pry
           raise StandardError, "Unable to checkout and pull branch: \"#{branch_name}\"."
         end
       end
 
       def initialize_branch_for_issue(issue)
-        branch_name = generate_branch_name(issue)
+        branch_name = issue.branch_name
         say(client.branch(branch_name).checkout)
         say(client.commit("Issue ##{issue.number} Started.", { allow_empty: true }))
         say(client.push(ORIGIN, branch_name))

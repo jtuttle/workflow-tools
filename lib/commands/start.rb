@@ -2,13 +2,21 @@ module WorkflowTools
   module Command
     class Start
       def self.execute(issue_number, parent_branch, issue_tracking, version_control)
+        parent_branch ||= version_control.current_branch
+
+        master_branch = version_control.master_branch
+        
+        if parent_branch != master_branch
+          return unless agree("Not currently on #{master_branch.name} branch. Branch off #{parent_branch.name} instead?")
+        end
+        
         issue = issue_tracking.issue(issue_number)
         branch_name = issue.branch_name
         
         if version_control.branch_exists?(branch_name)
           version_control.checkout_and_pull(branch_name)
         else
-          version_control.checkout_and_pull(parent_branch)
+          version_control.checkout_and_pull(parent_branch.name)
           version_control.initialize_branch_for_issue(issue)
         end
 
