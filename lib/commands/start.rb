@@ -5,8 +5,8 @@ module WorkflowTools
         parent_branch ||= version_control.current_branch
 
         master_branch = version_control.master_branch
-        
-        if parent_branch != master_branch
+
+        if parent_branch.name != master_branch.name
           return unless agree("Not currently on #{master_branch.name} branch. Branch off #{parent_branch.name} instead?")
         end
         
