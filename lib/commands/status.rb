@@ -3,7 +3,13 @@ module WorkflowTools
     class Status
       def self.execute(issue_number, version_control, issue_tracking)
         issue_number = issue_number || version_control.current_branch.issue_number
-        issue = issue_tracking.issue(issue_number)
+
+        begin
+          issue = issue_tracking.issue(issue_number)
+        rescue
+          say("Issue #{issue_number} not found.")
+          return
+        end
 
         str = HighLine.color("#{issue_tracking.service_name} Issue (#{issue.number})", :underline)
         str << "\n#{issue.url}"
