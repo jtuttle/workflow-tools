@@ -36,8 +36,21 @@ module WorkflowTools
         branch_name
       end
 
-      def push(branch)
-        client.push(ORIGIN, branch.name)
+      def push(branch_name)
+        say(client.push(ORIGIN, branch_name))
+      end
+
+      def merge(branch_name, base_branch_name)
+        say(client.branch(base_branch_name).merge(branch_name))
+      end
+
+      def delete_remote_branch(branch_name)
+        say(push(":#{branch_name}"))
+      end
+            
+      def delete_local_branch(branch_name)
+        checkout_and_pull(MASTER)
+        say(client.branch(branch_name).delete)
       end
 
       private
