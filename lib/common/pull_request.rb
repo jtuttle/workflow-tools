@@ -1,12 +1,13 @@
 module WorkflowTools
   module Common
     class PullRequest
-      attr_accessor :url, :number, :issue_number, :mergeable
+      attr_accessor :url, :number, :base_branch_name, :user_login, :mergeable
          
-      def initialize(url, number, issue_number, mergeable)
+      def initialize(url, number, base_branch_name, user_login, mergeable)
         @url = url
         @number = number
-        @issue_number = issue_number
+        @base_branch_name = base_branch_name
+        @user_login = user_login
         @mergeable = mergeable
       end
     end

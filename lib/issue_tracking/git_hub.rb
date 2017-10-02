@@ -53,13 +53,19 @@ module WorkflowTools
       end
 
       def pull_request(branch_name)
-        pull_request = client.pull_requests(repo_name).select do |pr|
+        pull_requests = client.pull_requests(repo_name).select do |pr|
           pr.head.ref == branch_name
         end
 
-        return nil if pull_request.first.nil?
+        return nil if pull_requests.count == 0
+        
+        if pull_requests.count > 1
+          raise StandardError, "Found multiple pull requests for branch #{branch_name}."
+        end
 
-        common_pull_request(pull_request.first)
+        pull_request = client.pull_request(repo_name, pull_requests.first.number)
+
+        common_pull_request(pull_request)
       end
 
       def find_or_create_pull_request(issue, parent_branch_name)
@@ -81,6 +87,12 @@ module WorkflowTools
         common_pull_request(pull_request)
       end
 
+      def close_issue(issue_number)
+        client.close_issue(repo_name, issue_number)
+
+        say("Closed issue #{issue_number}.")
+      end
+      
       private
 
       def client
@@ -108,7 +120,8 @@ module WorkflowTools
         ::WorkflowTools::Common::PullRequest.new(
           pull_request.html_url,
           pull_request.number,
-          pull_request.issue_url.split('/').last,
+          pull_request.base.ref,
+          pull_request.user.login,
           pull_request.mergeable
         )
       end

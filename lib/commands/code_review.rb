@@ -5,7 +5,7 @@ module WorkflowTools
         branch = version_control.current_branch
         issue = issue_tracking.issue(branch.issue_number)
 
-        version_control.push(branch)
+        version_control.push(branch.name)
         pull_request =
           issue_tracking.find_or_create_pull_request(issue, parent_branch_name)
 
