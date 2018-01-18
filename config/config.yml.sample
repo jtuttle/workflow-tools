@@ -1,2 +1,7 @@
 github:
   access_token: <github personal access token>
+
+jira:
+  username: <jira username>
+  password: <jira password>
+  base_url: <jira base url>
