@@ -2,6 +2,7 @@ require 'thor'
 require 'hashie'
 require 'highline/import'
 require 'pry'
+require 'slack-notifier'
 
 require_relative 'common/branch'
 require_relative 'common/issue'
@@ -13,6 +14,7 @@ require_relative 'commands/code_review'
 require_relative 'commands/complete'
 require_relative 'commands/start'
 require_relative 'commands/status'
+require_relative 'commands/task_breakdown'
 
 require_relative 'issue_tracking/git_hub'
 require_relative 'issue_tracking/jira'
@@ -32,6 +34,12 @@ module WorkflowTools
     option :issue_number, aliases: "-i", type: :numeric
     def status
       Command::Status.execute(options[:issue_number], version_control, issue_tracking)
+    end
+
+    desc "task_breakdown", "Posts a task breakdown to a Slack channel."
+    map tb: :task_breakdown
+    def task_breakdown(issue_number)
+      Command::TaskBreakdown.execute(issue_number, issue_tracking)
     end
     
     desc "start ISSUE_NUMBER", "Creates a branch and marks an issue as in progress."
@@ -79,8 +87,8 @@ module WorkflowTools
     end
     
     def issue_tracking
-      IssueTracking::GitHub.new
-      # IssueTracking::Jira.new
+      #IssueTracking::GitHub.new
+      IssueTracking::Jira.new
     end
   end
 end

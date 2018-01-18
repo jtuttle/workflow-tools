@@ -5,3 +5,6 @@ jira:
   username: <jira username>
   password: <jira password>
   base_url: <jira base url>
+
+slack:
+  webhook_url: <slack channel webhook url>
