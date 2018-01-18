@@ -28,8 +28,10 @@ module WorkflowTools
         end
 
         if !labels.nil?
+          labels.sort!
+          
           issues.select! do |i|
-            i.labels & labels == labels
+            i.labels & labels.sort == labels
           end
         end
 
