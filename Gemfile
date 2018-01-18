@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'thor', '~> 0.19.1'
 gem 'git', '~> 1.3.0'
 gem 'octokit', '~> 4.3.0'
+gem 'jira-ruby', '~> 1.4.3'
 # newer versions of Hashie fail on file parse
 # TODO: open a GitHub issue about this
 gem 'hashie', '~> 3.3.1'

@@ -5,7 +5,7 @@ module WorkflowTools
         issue_tracking.issues(labels, assignee).each do |i|
           labels = "#{i.labels.empty? ? '' : ' [' + i.labels.join(', ') + ']'}"
           assignee = "#{i.assignee.nil? ? '' : ' (' + i.assignee + ')'}"
-          puts "##{i.number} - #{i.title}#{labels}#{assignee}"
+          puts "#{i.number} - #{i.title}#{labels}#{assignee}"
         end
       end
     end

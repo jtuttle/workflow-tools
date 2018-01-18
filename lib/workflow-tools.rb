@@ -15,6 +15,7 @@ require_relative 'commands/start'
 require_relative 'commands/status'
 
 require_relative 'issue_tracking/git_hub'
+require_relative 'issue_tracking/jira'
 require_relative 'version_control/git'
 require_relative 'config'
 
@@ -79,6 +80,7 @@ module WorkflowTools
     
     def issue_tracking
       IssueTracking::GitHub.new
+      # IssueTracking::Jira.new
     end
   end
 end

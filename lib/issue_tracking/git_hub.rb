@@ -16,11 +16,9 @@ module WorkflowTools
         common_issue(issue)
       end
       
-      def issues(labels = [], assignee = nil)
-        labels ||= []
-        
+      def issues(labels, assignee)
         options = {
-          labels: labels.join(','),
+          labels: (labels || []).join(','),
           assignee: assignee
         }
         
