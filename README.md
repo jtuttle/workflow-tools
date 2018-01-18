@@ -40,6 +40,8 @@ A configurable CLI for managing project workflow.
 
 `wf code_review`: create a pull request and (optionally) assign the issue to a reviewer
 
+`wf complete`: merge pull request and (optionally) delete remote and local branches
+
 ## Contributing
 
 1. Fork it
