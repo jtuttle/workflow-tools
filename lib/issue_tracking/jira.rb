@@ -12,7 +12,8 @@ module WorkflowTools
       end
 
       def issue(issue_number)
-        # TODO
+        issue = client.Issue.find(issue_number)
+        common_issue(issue)
       end
 
       def issues(labels, assignee)
@@ -83,7 +84,7 @@ module WorkflowTools
             site: Config.user.jira.base_url,
             context_path: '',
             auth_type: :basic,
-            http_debug: true
+#            http_debug: true
           )
       end
 
