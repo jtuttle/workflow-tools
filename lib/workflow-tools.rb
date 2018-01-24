@@ -15,6 +15,7 @@ require_relative 'commands/complete'
 require_relative 'commands/start'
 require_relative 'commands/status'
 require_relative 'commands/task_breakdown'
+require_relative 'commands/branch_name'
 
 require_relative 'issue_tracking/git_hub'
 require_relative 'issue_tracking/jira'
@@ -40,6 +41,12 @@ module WorkflowTools
     map tb: :task_breakdown
     def task_breakdown(issue_number)
       Command::TaskBreakdown.execute(issue_number, issue_tracking)
+    end
+
+    desc "branch_name", "Generates a branch name for a given issue."
+    map bn: :branch_name
+    def branch_name(issue_number)
+      Command::BranchName.execute(issue_number, issue_tracking)
     end
     
     desc "start ISSUE_NUMBER", "Creates a branch and marks an issue as in progress."

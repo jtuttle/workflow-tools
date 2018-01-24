@@ -14,7 +14,7 @@ module WorkflowTools
       def branch_name
         branch_name = @title.downcase.strip.gsub(/[^\w\s]/, '').gsub(/\s+/, '-')
         cutoff = branch_name.index('-', 75) || 100
-        "#{branch_name.slice(0, cutoff)}--#{@number}"
+        "#{@number}--#{branch_name.slice(0, cutoff)}"
       end
     end
   end
