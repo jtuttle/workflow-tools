@@ -4,27 +4,9 @@ require 'highline/import'
 require 'pry'
 require 'slack-notifier'
 
-require_relative 'common/branch'
-require_relative 'common/issue'
-require_relative 'common/labels'
-require_relative 'common/pull_request'
-
-require_relative 'commands/issues'
-require_relative 'commands/code_review'
-require_relative 'commands/complete'
-require_relative 'commands/start'
-require_relative 'commands/status'
-require_relative 'commands/task_breakdown'
-require_relative 'commands/branch_name'
-
-require_relative 'issue_tracking/github'
-require_relative 'issue_tracking/jira'
-
-require_relative 'version_control/git'
-
-require_relative 'version_control_management/github'
-
 require_relative 'config'
+
+Dir[__dir__ + '/**/*.rb'].each {|file| puts file; require file }
 
 module WorkflowTools
   class WorkflowTools < Thor
