@@ -71,7 +71,7 @@ module WorkflowTools
 
     desc "complete", "Merges pull request, deletes branch, and closes issue."
     def complete
-      Command::Complete.execute(issue_tracking, version_control)
+      Command::Complete.execute(issue_tracking, version_control, version_control_management)
     end
 
     private
@@ -86,8 +86,8 @@ module WorkflowTools
     end
     
     def issue_tracking
-      #IssueTracking::GitHub.new
-      IssueTracking::Jira.new
+      IssueTracking::GitHub.new
+      #IssueTracking::Jira.new
     end
   end
 end

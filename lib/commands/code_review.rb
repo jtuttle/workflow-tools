@@ -13,8 +13,7 @@ module WorkflowTools
           issue_tracking.assign_issue(issue.number, reviewer)
         end
 
-        issue_tracking.remove_issue_label(issue.number, Common::Labels::IN_PROGRESS)
-        issue_tracking.add_issue_label(issue.number, Common::Labels::REVIEW)
+        issue_tracking.update_issue_status(issue.number, Config.project.status.review)
 
         say("Pull request created/updated: #{pull_request.url}")
         `open #{pull_request.url}` if agree("Open in browser?")
