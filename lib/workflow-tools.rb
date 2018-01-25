@@ -17,9 +17,13 @@ require_relative 'commands/status'
 require_relative 'commands/task_breakdown'
 require_relative 'commands/branch_name'
 
-require_relative 'issue_tracking/git_hub'
+require_relative 'issue_tracking/github'
 require_relative 'issue_tracking/jira'
+
 require_relative 'version_control/git'
+
+require_relative 'version_control_management/github'
+
 require_relative 'config'
 
 module WorkflowTools
@@ -66,7 +70,9 @@ module WorkflowTools
     option :parent, aliases: "-p", type: :string, default: "master"
     option :reviewer, aliases: "-r", type: :string
     def code_review
-      Command::CodeReview.execute(options[:parent], options[:reviewer], issue_tracking, version_control)
+      Command::CodeReview.execute(options[:parent], options[:reviewer],
+                                  issue_tracking, version_control,
+                                  version_control_management)
     end
 
     desc "revise", "Assign back to the person implementing the story."
@@ -92,10 +98,14 @@ module WorkflowTools
     def version_control
       VersionControl::Git.new
     end
+
+    def version_control_management
+      VersionControlManagement::GitHub.new
+    end
     
     def issue_tracking
-      #IssueTracking::GitHub.new
-      IssueTracking::Jira.new
+      IssueTracking::GitHub.new
+      #IssueTracking::Jira.new
     end
   end
 end

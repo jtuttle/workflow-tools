@@ -8,7 +8,13 @@ module WorkflowTools
       end
 
       def issue_number
-        /\d+$/.match(@name).to_s.to_i
+        split_name = @name.split('--')
+        
+        if split_name.length < 2
+          raise StandardError, "Could not get issue number from branch: #{@name}"
+        end
+        
+        split_name[0]
       end
     end
   end
