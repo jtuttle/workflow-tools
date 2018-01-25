@@ -65,7 +65,7 @@ module WorkflowTools
 
         issue.transitions.build.save!(transition: { id: transition.id })
 
-        say("Changed status of #{issue_number} to: #{task_breakdown_status}")
+        say("Changed status of #{issue_number} to: #{status}")
       end
 
       def add_issue_label(issue_number, label)
@@ -74,14 +74,6 @@ module WorkflowTools
 
       def remove_issue_label(issue_number, label)
         # TODO
-      end
-
-      def pull_request(branch_name)
-        # TODO: oops, this shouldn't really be in the issue tracker!
-      end
-
-      def find_or_create_pull_request(issue, parent_branch_name)
-        # TODO: oops, this shouldn't really be in the issue tracker!
       end
       
       def close_issue(issue_number)
@@ -96,7 +88,7 @@ module WorkflowTools
 
       def project
         @project ||=
-          client.Project.find(Config.project.jira.project_name)
+          client.Project.find(Config.project.project_name)
       end
 
       def client

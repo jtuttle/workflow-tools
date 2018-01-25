@@ -37,21 +37,14 @@ module WorkflowTools
       end
 
       def update_issue_status(issue_number, status)
-        add_issue_label(issue_number, label)
-      end
+        Config.project.status.values.each do |s|
+          client.remove_label(repo_name, issue_number, s) rescue Octokit::NotFound
+        end
 
-      def add_issue_label(issue_number, label)
+        label = Config.project.status[status]
+        
         client.add_labels_to_an_issue(repo_name, issue_number, [label])
         say("Added label '#{label}'")
-      end
-      
-      def remove_issue_label(issue_number, label)
-        begin
-          client.remove_label(repo_name, issue_number, label)
-          say("Removed label '#{label}'.")
-        rescue Octokit::NotFound
-          say("Tried to remove label '#{label}' but it was not found.")
-        end
       end
 
       def close_issue(issue_number)

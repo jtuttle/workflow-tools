@@ -1,9 +1,9 @@
 module WorkflowTools
   module Command
     class Complete
-      def self.execute(issue_tracking, version_control)
+      def self.execute(issue_tracking, version_control, version_control_management)
         branch = version_control.current_branch
-        pull_request = issue_tracking.pull_request(branch.name)
+        pull_request = version_control_management.pull_request(branch.name)
 
         if !pull_request.mergeable
           say("Pull request not mergeable. Check for conflicts.")

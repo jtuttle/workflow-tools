@@ -21,8 +21,7 @@ module WorkflowTools
         end
 
         issue_tracking.assign_issue(issue.number, issue_tracking.user)
-        issue_tracking.add_issue_label(issue_number, Common::Labels::IN_PROGRESS)
-        issue_tracking.remove_issue_label(issue_number, Common::Labels::READY)
+        issue_tracking.update_issue_status(issue.number, Config.project.status.in_progress)
 
         say("Issue started! You are now working in branch: #{branch_name}")        
       end

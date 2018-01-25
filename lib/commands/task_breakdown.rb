@@ -4,8 +4,8 @@ module WorkflowTools
       def self.execute(issue_number, issue_tracking)
         issue = issue_tracking.issue(issue_number)
 
-        task_breakdown_status = Config.user.jira.status.task_breakdown
-        issue_tracking.update_issue_status(issue_number, task_breakdown_status)
+        issue_tracking.update_issue_status(issue_number,
+                                           Config.project.status.task_breakdown)
         
         task_steps = []
         task_step = nil
