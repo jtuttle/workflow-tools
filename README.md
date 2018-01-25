@@ -36,6 +36,10 @@ A configurable CLI for managing project workflow.
 
 `wf status`: shows the status of the issue for the current branch or given issue number
 
+`wf task_breakdown [issue_number]`: posts a bulleted list of steps to the configured Slack channel
+
+`wf branch_name [issue_number]`: prints a branch name for an issue
+
 `wf start [issue_number]`: create a branch, perform an initial commit, and label the issue as "in progress"
 
 `wf code_review`: create a pull request and (optionally) assign the issue to a reviewer

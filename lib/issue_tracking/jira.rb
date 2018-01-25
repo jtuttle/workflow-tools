@@ -45,6 +45,29 @@ module WorkflowTools
         # TODO
       end
 
+      def update_issue_status(issue_number, status)
+        issue = client.Issue.find(issue_number)
+
+        if issue.status.name == status
+          say("Issue already has status: #{status}")
+          return
+        end
+
+        transition =
+          client.Transition.all(issue: issue).
+          find { |t| t.to.name == status }
+
+        # TODO: raise an exception for this instead.
+        if transition.nil?
+          say("Issue already has status: #{status}")
+          return
+        end
+
+        issue.transitions.build.save!(transition: { id: transition.id })
+
+        say("Changed status of #{issue_number} to: #{task_breakdown_status}")
+      end
+
       def add_issue_label(issue_number, label)
         # TODO
       end
@@ -84,7 +107,7 @@ module WorkflowTools
             site: Config.user.jira.base_url,
             context_path: '',
             auth_type: :basic,
-#            http_debug: true
+            http_debug: true
           )
       end
 
