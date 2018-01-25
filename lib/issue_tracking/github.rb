@@ -36,6 +36,10 @@ module WorkflowTools
         end
       end
 
+      def update_issue_status(issue_number, status)
+        add_issue_label(issue_number, label)
+      end
+
       def add_issue_label(issue_number, label)
         client.add_labels_to_an_issue(repo_name, issue_number, [label])
         say("Added label '#{label}'")

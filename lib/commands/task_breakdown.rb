@@ -3,11 +3,14 @@ module WorkflowTools
     class TaskBreakdown
       def self.execute(issue_number, issue_tracking)
         issue = issue_tracking.issue(issue_number)
+
+        task_breakdown_status = Config.user.jira.status.task_breakdown
+        issue_tracking.update_issue_status(issue_number, task_breakdown_status)
         
         task_steps = []
         task_step = nil
 
-        say("Task breakdown for #{issue.title}")
+        say("Task breakdown for #{issue_number}: #{issue.title}\n")
         
         while task_step != ''
           task_step = ask("What's the next step?")

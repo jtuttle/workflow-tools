@@ -6,7 +6,7 @@ require 'slack-notifier'
 
 require_relative 'config'
 
-Dir[__dir__ + '/**/*.rb'].each {|file| puts file; require file }
+Dir[__dir__ + '/**/*.rb'].each {|file| require file }
 
 module WorkflowTools
   class WorkflowTools < Thor
@@ -86,8 +86,8 @@ module WorkflowTools
     end
     
     def issue_tracking
-      IssueTracking::GitHub.new
-      #IssueTracking::Jira.new
+      #IssueTracking::GitHub.new
+      IssueTracking::Jira.new
     end
   end
 end
