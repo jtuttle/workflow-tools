@@ -1,13 +1,13 @@
 module WorkflowTools
   module Command
     class CodeReview
-      def self.execute(parent_branch_name, reviewer, issue_tracking, version_control)
+      def self.execute(parent_branch_name, reviewer, issue_tracking, version_control, version_control_management)
         branch = version_control.current_branch
         issue = issue_tracking.issue(branch.issue_number)
 
         version_control.push(branch.name)
         pull_request =
-          issue_tracking.find_or_create_pull_request(issue, parent_branch_name)
+          version_control_management.find_or_create_pull_request(issue, parent_branch_name)
 
         if !reviewer.nil?
           issue_tracking.assign_issue(issue.number, reviewer)
