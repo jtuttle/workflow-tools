@@ -86,8 +86,8 @@ module WorkflowTools
     end
     
     def issue_tracking
-      IssueTracking::GitHub.new
-      #IssueTracking::Jira.new
+      #IssueTracking::GitHub.new
+      IssueTracking::Jira.new
     end
   end
 end

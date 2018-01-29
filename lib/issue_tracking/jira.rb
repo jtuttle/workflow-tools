@@ -43,6 +43,7 @@ module WorkflowTools
 
       def assign_issue(issue_number, assignee)
         # TODO
+        binding.pry
       end
 
       def update_issue_status(issue_number, status)
