@@ -4,6 +4,10 @@ module WorkflowTools
       def self.execute(issue_number, issue_tracking)
         issue = issue_tracking.issue(issue_number)
 
+        issue_tracking.assign_issue(issue_number, issue_tracking.user)
+        
+        return
+        
         issue_tracking.update_issue_status(issue_number,
                                            Config.project.status.task_breakdown)
         
