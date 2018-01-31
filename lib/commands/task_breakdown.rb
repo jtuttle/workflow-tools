@@ -17,7 +17,7 @@ module WorkflowTools
           task_steps << task_step unless task_step.empty?
         end
 
-        message = "Task breakdown from *#{issue_tracking.user}* for #{issue.url} (#{issue.title})\n"
+        message = "Task breakdown from @#{issue_tracking.user} for #{issue.url} (#{issue.title})\n"
 
         task_steps.each do |step|
           message << "- #{step}\n"
